@@ -73,13 +73,21 @@ static NSString *const kPresentingFlipTransitionKey = @"kPresentingFlipTransitio
 	
 	[self setPresentedFlipTransition:transition];
 	[destinationViewController setPresentingFlipTransition:transition];
-	
-	[transition performWithCompletion:completion];
+
+   __block UIViewController* retainedDestinationViewController = destinationViewController;
+	[transition performWithCompletion: ^{
+      if (completion) {
+         completion();
+      }
+
+      retainedDestinationViewController = nil;
+   }];
 }
 
 - (void)dismissFlipWithCompletion:(void (^)(void))completion {
-	if ([self getPresentingFlipTransition]) {
-		[[self getPresentingFlipTransition] reverseWithCompletion:completion];
+   ADFlipTransition* transition = [self getPresentingFlipTransition];
+	if (transition) {
+		[transition reverseWithCompletion: completion];
 	} else {
 		NSLog(@"View wasn't presented by a flip transition");
 	}

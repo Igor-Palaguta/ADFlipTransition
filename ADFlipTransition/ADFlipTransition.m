@@ -33,11 +33,11 @@
 
 @interface ADFlipTransition ()
 
-@property (nonatomic) UIViewController *sourceViewController;
+@property (nonatomic, weak) UIViewController *sourceViewController;
 @property (nonatomic) UIView *sourceView;
 @property (nonatomic) UIImage *sourceImage;
 
-@property (nonatomic) UIViewController *destinationViewController;
+@property (nonatomic, weak) UIViewController *destinationViewController;
 @property (nonatomic) CGSize destinationSize;
 @property (nonatomic) UIImage *destinationImage;
 
@@ -306,6 +306,7 @@
 	//perform the first half of the animation
 	CATransform3D srcTransform = CATransform3DMakeRotation(M_PI/2, 0, 1, 0);
 	srcTransform.m34 = 1.0f/-500;
+
 	[UIView animateWithDuration:[self animationDuration]/3 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
 		[[srcView layer] setTransform:srcTransform];
 		[srcView setFrame:halfwayFrame];
